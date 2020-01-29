@@ -16,6 +16,9 @@ namespace MonoGameWindowsStarter
         Random random = new Random();
         Vector2 ballPosition;
         Vector2 ballVelocity;
+        Texture2D paddle;
+        Rectangle paddleRect;
+        int paddleSpeed = 0;
 
 
 
@@ -42,6 +45,11 @@ namespace MonoGameWindowsStarter
             ballVelocity = new Vector2((float)random.NextDouble(), (float)random.NextDouble());
             ballVelocity.Normalize();
 
+            paddleRect.X = 0;
+            paddleRect.Y = 0;
+            paddleRect.Width = 50;
+            paddleRect.Height = 250;
+
             base.Initialize();
         }
 
@@ -56,6 +64,7 @@ namespace MonoGameWindowsStarter
 
             // TODO: use this.Content to load your game content here
             ball = Content.Load<Texture2D>("937px-Shiny_steel_ball");
+            paddle = Content.Load<Texture2D>("pixel");
         }
 
         /// <summary>
@@ -80,6 +89,25 @@ namespace MonoGameWindowsStarter
             if(Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+
+                paddleRect.Y -= 20;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                paddleRect.Y += 20;
+            }
+
+            if (paddleRect.Y < 0)
+            {
+                paddleRect.Y = 0;
+            }
+            if (paddleRect.Y > (GraphicsDevice.Viewport.Height - paddleRect.Height))
+            {
+                paddleRect.Y = (GraphicsDevice.Viewport.Height - paddleRect.Height);
             }
 
             // TODO: Add your update logic here
@@ -126,6 +154,7 @@ namespace MonoGameWindowsStarter
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             spriteBatch.Draw(ball, new Rectangle((int)ballPosition.X, (int)ballPosition.Y, 100, 100), Color.White);
+            spriteBatch.Draw(paddle, paddleRect, Color.Green);
             spriteBatch.End();
 
             base.Draw(gameTime);
