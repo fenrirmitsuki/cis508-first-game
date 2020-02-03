@@ -18,7 +18,7 @@ namespace MonoGameWindowsStarter
             set => {
                 X = value.X;
                 Y = value.Y;
-            }
+            };
         }
     }
 }
